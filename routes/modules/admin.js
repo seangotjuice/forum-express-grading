@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router()
 const adminController = require('../../controllers/admin-controller')
 const { authenticatedAdmin } = require('../../middleware/auth')
-const upload = require('../../middleware/multer') // 載入 multer
+const upload = require('../../middleware/multer')
+
+router.get('/users', adminController.getUsers)
+router.patch('/users/:id', adminController.patchUser)
 
 router.get('/restaurants/create', adminController.createRestaurant)
 router.get('/restaurants/:id/edit', adminController.editRestaurant)
