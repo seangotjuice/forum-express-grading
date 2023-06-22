@@ -1,4 +1,4 @@
-const { Restaurant, User, Category } = require("../models"); // 新增這裡
+const { Restaurant, Category } = require("../models"); // 新增這裡
 const { localFileHandler } = require("../helpers/file-helpers"); // 將 file-helper 載進來
 
 const adminController = {
