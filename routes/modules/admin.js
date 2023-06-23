@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../../controllers/admin-controller')
+const categoryController = require('../../controllers/category-controller')
+
 const { authenticatedAdmin } = require('../../middleware/auth')
 const upload = require('../../middleware/multer')
 
@@ -22,6 +24,7 @@ router.post(
   upload.single('image'),
   adminController.postRestaurant
 )
+router.get('/categories', categoryController.getCategories)
 
-router.use('/', (req, res) => res.redirect('/admin/restaurants'))
+router.get('/', (req, res) => res.redirect('/admin/restaurants'))
 module.exports = router
