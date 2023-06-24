@@ -9,9 +9,13 @@ const adminController = {
       include: [Category]
     })
 
-      .then(restaurants => res.render('admin/restaurants', { restaurants }))
+      .then(restaurants => {
+        res.render('admin/restaurants', { restaurants })
+      })
 
-      .catch(err => next(err))
+      .catch(err => {
+        next(err)
+      })
   },
   createRestaurant: (req, res, next) => {
     return Category.findAll({
