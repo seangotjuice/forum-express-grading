@@ -25,6 +25,7 @@ router.post(
   adminController.postRestaurant
 )
 router.get('/categories', categoryController.getCategories)
+router.post('/categories', categoryController.postCategory)
 
 router.use('/', (req, res) => res.redirect('/admin/restaurants'))
 module.exports = router
