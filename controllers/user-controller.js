@@ -48,7 +48,12 @@ const userController = {
     return User.findByPk(req.params.id, {
       raw: true,
       nest: true,
-    });
+    })
+      .then((user) => {
+        console.log("user", user);
+        return res.render("user", { user });
+      })
+      .catch((err) => console.log(err));
   },
 };
 module.exports = userController;
