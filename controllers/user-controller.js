@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs"); // 載入 bcrypt
 const db = require("../models");
 const { User } = db;
+const { localFileHandler } = require("../helpers/file-helpers"); // 將 file-helper 載進來
 const userController = {
   signUpPage: (req, res) => {
     res.render("signup");
@@ -49,11 +50,40 @@ const userController = {
       raw: true,
       nest: true,
     })
-      .then((user) => {
-        console.log("user", user);
-        return res.render("user", { user });
-      })
+      .then((user) => res.render("users/profile", { user }))
       .catch((err) => console.log(err));
+  },
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+    })
+      .then((user) => res.render("users/edit", { user }))
+      .catch((err) => console.log(err));
+  },
+  putUser: (req, res, next) => {
+    const { name, email } = req.body;
+    const { file } = req;
+    const id = req.params.id;
+    return Promise.all([
+      // 非同步處理
+      User.findByPk(id), // 去資料庫查有沒有這間餐廳
+      localFileHandler(file), // 把檔案傳到 file-helper 處理
+    ])
+      .then(([user, filePath]) => {
+        // 以上兩樣事都做完以後
+        if (!user) throw new Error("user didn't exist!");
+        return user.update({
+          name,
+          email,
+          avatar: filePath || user.avatar,
+        });
+      })
+      .then(() => {
+        req.flash("success_messages", "使用者資料編輯成功");
+        res.redirect(`/users/${id}`);
+      })
+      .catch((err) => next(err));
   },
 };
 module.exports = userController;

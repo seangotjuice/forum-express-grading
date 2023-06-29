@@ -8,6 +8,7 @@ const commentController = require("../controllers/comment-controller"); // 引�
 
 const { generalErrorHandler } = require("../middleware/error-handler"); // 加入這行
 const passport = require("../config/passport");
+const upload = require("../middleware/multer"); // 載入 multer
 
 router.use("/admin", admin);
 router.get("/signup", userController.signUpPage);
@@ -27,7 +28,7 @@ router.get(
   authenticated,
   restController.getDashboard
 );
-router.get("/restaurants/:id", authenticated, restController.getRestaurant); // 新增這行
+router.get("/restaurants/:id", authenticated, restController.getRestaurant);
 router.get("/restaurants", authenticated, restController.getRestaurants);
 
 router.delete(
@@ -37,9 +38,16 @@ router.delete(
 );
 router.post("/comments", authenticated, commentController.postComment);
 
+router.get("/users/:id/edit", authenticated, userController.editUser);
 router.get("/users/:id", authenticated, userController.getUser);
+router.put(
+  "/users/:id",
+  authenticated,
+  upload.single("avatar"),
+  userController.putUser
+);
 
 router.get("/", (req, res) => res.redirect("/restaurants"));
-router.use("/", generalErrorHandler); // 加入這行
+router.use("/", generalErrorHandler);
 
 module.exports = router;
