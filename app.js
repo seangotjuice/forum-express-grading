@@ -11,7 +11,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const SESSION_SECRET = 'secret' // 新增這行
 const { getUser } = require('./helpers/auth-helpers')
-const { handlebarsHelpers } = require('./helpers/handlebars-helpers') // 引入 handlebars-helpers
+const handlebarsHelpers = require('./helpers/handlebars-helpers') // 引入 handlebars-helpers
 const methodOverride = require('method-override') // 引入套件 method-override
 const path = require('path') // 引入 path 套件
 

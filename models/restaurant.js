@@ -1,4 +1,5 @@
 'use strict'
+const Datatype = require('faker/lib/datatype')
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Restaurant extends Model {
@@ -8,7 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      // define association here
+      Restaurant.belongsTo(models.Category, { foreignKey: 'categoryId' }) // 增加這行
+      Restaurant.hasMany(models.Comment, { foreignKey: 'restaurantId' })
+      // 新增以下
+      Restaurant.belongsToMany(models.User, {
+        through: models.Favorite, // 透過 Favorite 表來建立關聯
+        foreignKey: 'restaurantId', // 對 Favorite 表設定 FK
+        as: 'FavoritedUsers' // 幫這個關聯取個名稱
+      })
+      Restaurant.belongsToMany(models.User, {
+        through: models.Like, // 透過 Favorite 表來建立關聯
+        foreignKey: 'restaurantId', // 對 Favorite 表設定 FK
+        as: 'LikedUsers' // 幫這個關聯取個名稱
+      })
     }
   }
   Restaurant.init(
@@ -18,13 +31,12 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       openingHours: DataTypes.STRING,
       description: DataTypes.TEXT,
-      image: DataTypes.STRING // 新增這一行
+      image: DataTypes.STRING,
+      viewCounts: DataTypes.INTEGER
     },
     {
       sequelize,
       modelName: 'Restaurant',
-      tableName: 'Restaurants', // 新增這裡
-
       underscored: true
     }
   )

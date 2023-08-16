@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../../controllers/admin-controller')
+const categoryController = require('../../controllers/category-controller')
+
 const { authenticatedAdmin } = require('../../middleware/auth')
 const upload = require('../../middleware/multer')
 
@@ -22,6 +24,11 @@ router.post(
   upload.single('image'),
   adminController.postRestaurant
 )
+router.get('/categories/:id', categoryController.getCategories) // 新增這行
+router.put('/categories/:id', categoryController.putCategory) // 新增這行
+router.delete('/categories/:id', categoryController.deleteCategory) // 新增這行
+router.get('/categories', categoryController.getCategories)
+router.post('/categories', categoryController.postCategory)
 
 router.use('/', (req, res) => res.redirect('/admin/restaurants'))
 module.exports = router
