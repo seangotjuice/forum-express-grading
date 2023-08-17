@@ -1,5 +1,5 @@
 'use strict'
-const Datatype = require('faker/lib/datatype')
+// const Datatype = require('faker/lib/datatype')
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Restaurant extends Model {
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Restaurant',
+      tableName: 'Restaurants',
       underscored: true
     }
   )
